@@ -12,6 +12,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { loginModel } from '../models/loginModel';
 import Divider from '@mui/material/Divider';
 import LockIcon from '@mui/icons-material/Lock';
+import { useDispatch } from 'react-redux';
+import { login } from '../actions/auth';
 
 const useStyles = makeStyles({
   containerMiddle: {
@@ -19,6 +21,13 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#eceff7'
+  },
+  boxLoginAndRegister: {
+    padding: '100px 40px',
+    border: '1px solid #c5c5c5',
+    borderRadius: '15px',
+    backgroundColor: '#ffffff',
   },
   errorsMessages: {
     color: '#d32f2f',
@@ -44,16 +53,17 @@ const useStyles = makeStyles({
 export const LoginScreen = () => {
 
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const { register, handleSubmit, watch, control, formState: { errors } } = useForm<loginModel>();
-  const onSubmit = handleSubmit(data => console.log(data));
+  const onSubmit = handleSubmit(data => dispatch(login(data)));
 
   return (
     <Grid container className={classes.containerMiddle} justifyContent="center" alignItems="center" spacing={2} direction="column">
-     <Box> 
+     <Box className={classes.boxLoginAndRegister}> 
         <Grid >
           <Box className={classes.centerTitlesAndSub}>
-            <Typography variant="h3" gutterBottom component="div">
+            <Typography variant="h4" gutterBottom component="div">
               Bienvenido a WeddApp
             </Typography>
           </Box>
@@ -83,11 +93,16 @@ export const LoginScreen = () => {
                       }}
                     />
                   )}
-                  rules={{ required: true }}
+                  rules={{ required: true, pattern: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/}}
                 />
-                {errors?.email && 
+                {errors?.email?.type === 'required' && 
                 <Box className={classes.errorsMessages}>
                    Correo electrónico es requerido
+                </Box>
+                }
+                {errors?.email?.type === 'pattern' && 
+                <Box className={classes.errorsMessages}>
+                   Ingrese un correo electrónico válido
                 </Box>
                 }
             </Box>
@@ -124,9 +139,6 @@ export const LoginScreen = () => {
             </Box>
           </form>
         </Grid>
-      </Box>
-      <Box mt={3} mb={3}>
-        <Divider>CENTER</Divider>
       </Box>
     </Grid>
   );

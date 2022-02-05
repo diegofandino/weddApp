@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {Outlet, Navigate} from 'react-router';
 
-const useAuth = () => {
-    const user = {loggedIn: true};
-    return user && user.loggedIn;
-}
-
 const ProtectedRoutes = () => {
-
-    const isAuth = useAuth();
-
-  return  isAuth ? <Outlet /> : <Navigate to='/' /> 
+  
+  const isLoggedIn = useSelector((state) => state);
+  console.log("logueo", isLoggedIn);
+    
+    // return  isAuth ? <Outlet /> : <Navigate to='/' /> 
 };
 
 
