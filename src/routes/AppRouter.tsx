@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, RootStateOrAny} from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch} from 'react-redux';
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { checkingAuth } from '../actions/auth';
 import { DashboardScreen } from '../pages/DashboardScreen';
 import { LoginScreen } from '../pages/LoginScreen';
 import { RegisterPage } from '../pages/RegisterPage';
@@ -8,22 +9,20 @@ import ProtectedRoutes from './ProtectedRoutes';
 
 export const AppRouter = () => {
 
+  const dispatch = useDispatch();
   const authState = useSelector((state:RootStateOrAny) => state.auth);
-  console.log(authState);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(authState.isLoggedIn);
 
   useEffect(() => {
-    if(authState.isLoggedIn){
-      setIsLoggedIn(authState.isLoggedIn);
-      // navigate("/dashboard");
-    }
-  }, [authState]);
+    dispatch(checkingAuth());
+  }, [dispatch]);
+  
 
   return (
         <Routes>
-            <Route path='/' element={<LoginScreen />} />
+            <Route path='/login' element={!authState.isLoggedIn ? <LoginScreen /> : <Navigate to="/" />} />
             <Route path='/register' element={<RegisterPage />} />
-            <Route element={ isLoggedIn ? <Outlet /> : <Navigate to="/" /> }>
+            <Route path="/" element={ authState.isLoggedIn ? <DashboardScreen /> : <Navigate to="/login" /> }>
                 <Route path='/dashboard' element={<DashboardScreen />} />
             </Route>
         </Routes>
