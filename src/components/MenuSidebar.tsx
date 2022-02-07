@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { makeStyles } from '@mui/styles';
-import { Navigate } from 'react-router'
+import { Navigate,useNavigate } from 'react-router'
 import { Box } from '@mui/material';
 
 const useStyles = makeStyles({
@@ -26,18 +26,20 @@ const useStyles = makeStyles({
 
 export const MenuSidebar = () => {
 
+  const navigate = useNavigate();
+
   const [activeItemIndex, setActiveItemIndex] = useState(0)
   const classes = useStyles();
 
   const arrayMenuItems = [
-    { id: 1, name: 'estadisticas', icon: 'AssessmentOutlined' },
-    { id: 2, name: 'usuarios', icon: 'PersonOutlineOutlined' },
-    { id: 3,name: 'Blog', icon: 'FeedOutlined' },
+    { id: 1, name: 'estadisticas', icon: 'AssessmentOutlined', url:'/dashboard/estadisticas' },
+    { id: 2, name: 'usuarios', icon: 'PersonOutlineOutlined', url:'/dashboard/users' },
+    { id: 3,name: 'Blog', icon: 'FeedOutlined', url:'/dashboard/blog'},
   ];
 
   const handleNavigateRoute = (routePath: string, idx: number) => {
     setActiveItemIndex(idx);
-    console.log("Navigate to", routePath);
+    navigate(routePath);
   }
 
 
@@ -46,7 +48,7 @@ export const MenuSidebar = () => {
       <MenuList>
         { arrayMenuItems.map((item, idx) => (
           <MenuItem selected={activeItemIndex == item.id}
-          classes={{ selected: classes.selectedItem, root: classes.rootitem }} key={idx} onClick={() => handleNavigateRoute(item.name, item.id)}>
+          classes={{ selected: classes.selectedItem, root: classes.rootitem }} key={idx} onClick={() => handleNavigateRoute(item.url, item.id)}>
             <ListItemIcon >
               {/* <ComponentWithIcon iconName="Add" /> */}
             </ListItemIcon>

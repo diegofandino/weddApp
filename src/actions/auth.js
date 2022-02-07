@@ -20,7 +20,18 @@ export const login = (user) => {
     }
 }
 
+export const logout = () => {
+    return async(dispatch) => {
+        localStorage.clear();
+        dispatch(finishLogout());
+    }
+}
+
 export const finishLogin = (user) => ({
     type: types.authLogin,
     payload: user
+})
+
+export const finishLogout = () => ({
+    type: types.authLogout,
 })

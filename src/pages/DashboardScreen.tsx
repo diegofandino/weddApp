@@ -5,6 +5,7 @@ import { MenuSidebar } from '../components/MenuSidebar';
 import { UserInfoBar } from '../components/UserInfoBar';
 import { makeStyles } from '@mui/styles';
 import { LogoutButton } from '../components/LogoutButton';
+import {Outlet} from 'react-router-dom'
 
 const useStyles = makeStyles({
   sidebarInfo: {
@@ -43,7 +44,9 @@ export const DashboardScreen = () => {
           </Box>
         </Box>
         </Grid>
-        <Grid item xs={10}></Grid>
+        <Grid item xs={10}>
+          <Outlet />
+        </Grid>
       </Grid>
   );
 };

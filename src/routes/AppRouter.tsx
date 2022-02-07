@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, RootStateOrAny, useDispatch} from 'react-redux';
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { checkingAuth } from '../actions/auth';
+import { BlogPage } from '../pages/BlogPage';
 import { DashboardScreen } from '../pages/DashboardScreen';
 import { LoginScreen } from '../pages/LoginScreen';
 import { RegisterPage } from '../pages/RegisterPage';
+import { UsersPage } from '../pages/UsersPage';
 import ProtectedRoutes from './ProtectedRoutes';
 
 export const AppRouter = () => {
@@ -22,8 +24,10 @@ export const AppRouter = () => {
         <Routes>
             <Route path='/login' element={!authState.isLoggedIn ? <LoginScreen /> : <Navigate to="/" />} />
             <Route path='/register' element={<RegisterPage />} />
-            <Route path="/" element={ authState.isLoggedIn ? <DashboardScreen /> : <Navigate to="/login" /> }>
-                <Route path='/dashboard' element={<DashboardScreen />} />
+            <Route path="/" element={ authState.isLoggedIn ? <DashboardScreen /> : <Navigate to="/login" /> } />
+            <Route path='/dashboard' element={<DashboardScreen />}>
+                <Route path="/dashboard/users" element={<UsersPage />} />
+                <Route path="/dashboard/blog" element={<BlogPage />} />
             </Route>
         </Routes>
   );
