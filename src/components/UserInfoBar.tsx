@@ -12,6 +12,7 @@ const useStyles = makeStyles({
         padding: '16px 20px',
         borderRadius: '12px',
         backgroundColor: 'rgb(244, 246, 248)',
+        margin: '0px 25px'
     },
     nameUser: {
         paddingLeft: 12,
